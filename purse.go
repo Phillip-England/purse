@@ -2,6 +2,7 @@
 package purse
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -316,4 +317,20 @@ func ReplaceLastInstanceOf(s, old, new string) string {
 		return s // Return the original string if the substring is not found
 	}
 	return s[:index] + new + s[index+len(old):]
+}
+
+// Split a string by " " spaces and work on each chunck
+func WorkOnStrChunks(input string, processFunc func(string) error) error {
+	// Split the input string by spaces
+	chunks := strings.Fields(input)
+
+	// Iterate over each chunk
+	for _, chunk := range chunks {
+		// Apply the provided function to the chunk
+		if err := processFunc(chunk); err != nil {
+			return fmt.Errorf("error processing chunk %q: %w", chunk, err)
+		}
+	}
+
+	return nil
 }

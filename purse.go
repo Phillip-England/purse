@@ -299,3 +299,21 @@ func MustEqualOneOf(str string, options ...string) bool {
 	}
 	return false
 }
+
+// ReplaceFirstInstanceOf replaces the first occurrence of `old` with `new` in `s`.
+func ReplaceFirstInstanceOf(s, old, new string) string {
+	index := strings.Index(s, old)
+	if index == -1 {
+		return s // Return the original string if the substring is not found
+	}
+	return s[:index] + new + s[index+len(old):]
+}
+
+// ReplaceLastInstanceOf replaces the last occurrence of `old` with `new` in `s`.
+func ReplaceLastInstanceOf(s, old, new string) string {
+	index := strings.LastIndex(s, old)
+	if index == -1 {
+		return s // Return the original string if the substring is not found
+	}
+	return s[:index] + new + s[index+len(old):]
+}

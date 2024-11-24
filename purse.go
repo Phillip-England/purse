@@ -334,3 +334,16 @@ func WorkOnStrChunks(input string, processFunc func(string) error) error {
 
 	return nil
 }
+
+func KebabToCamelCase(input string) string {
+	parts := strings.Split(input, "-")
+	if len(parts) == 0 {
+		return ""
+	}
+	for i := 1; i < len(parts); i++ {
+		if len(parts[i]) > 0 {
+			parts[i] = strings.ToUpper(string(parts[i][0])) + strings.ToLower(parts[i][1:])
+		}
+	}
+	return strings.Join(parts, "")
+}

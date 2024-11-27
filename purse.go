@@ -393,3 +393,7 @@ func contains(slice []string, str string) bool {
 	}
 	return false
 }
+
+func Fmt(str string, args ...any) string {
+	return RemoveFirstLine(fmt.Sprintf(str, args...))
+}

@@ -4,6 +4,7 @@ package purse
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 )
@@ -346,4 +347,9 @@ func KebabToCamelCase(input string) string {
 		}
 	}
 	return strings.Join(parts, "")
+}
+
+func StrIsFilePath(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil || os.IsNotExist(err)
 }

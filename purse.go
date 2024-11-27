@@ -356,3 +356,22 @@ func FindMatchInStrSlice(slice []string, str string) string {
 	}
 	return ""
 }
+
+func GetAllLetters() []string {
+	letters := make([]string, 0, 26*2) // 26 lowercase + 26 uppercase
+	for ch := 'a'; ch <= 'z'; ch++ {
+		letters = append(letters, string(ch))
+	}
+	for ch := 'A'; ch <= 'Z'; ch++ {
+		letters = append(letters, string(ch))
+	}
+	return letters
+}
+
+func GetAllNumbers() []string {
+	numbers := make([]string, 0, 10) // Digits 0-9
+	for ch := '0'; ch <= '9'; ch++ {
+		numbers = append(numbers, string(ch))
+	}
+	return numbers
+}

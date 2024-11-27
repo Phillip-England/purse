@@ -368,6 +368,22 @@ func GetAllLetters() []string {
 	return letters
 }
 
+func GetAllUpperCaseLetters() []string {
+	letters := make([]string, 0, 26*2) // 26 lowercase + 26 uppercase
+	for ch := 'A'; ch <= 'Z'; ch++ {
+		letters = append(letters, string(ch))
+	}
+	return letters
+}
+
+func GetAllLowerCaseLetters() []string {
+	letters := make([]string, 0, 26*2) // 26 lowercase + 26 uppercase
+	for ch := 'a'; ch <= 'z'; ch++ {
+		letters = append(letters, string(ch))
+	}
+	return letters
+}
+
 func GetAllNumbers() []string {
 	numbers := make([]string, 0, 10) // Digits 0-9
 	for ch := '0'; ch <= '9'; ch++ {

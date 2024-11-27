@@ -375,3 +375,21 @@ func GetAllNumbers() []string {
 	}
 	return numbers
 }
+
+func EnforeWhitelist(input string, whitelist []string) bool {
+	for _, char := range input {
+		if !contains(whitelist, string(char)) {
+			return false
+		}
+	}
+	return true
+}
+
+func contains(slice []string, str string) bool {
+	for _, item := range slice {
+		if item == str {
+			return true
+		}
+	}
+	return false
+}

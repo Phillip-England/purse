@@ -353,3 +353,12 @@ func StrIsFilePath(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil || os.IsNotExist(err)
 }
+
+func FindMatchInStrSlice(slice []string, str string) string {
+	for _, item := range slice {
+		if item == str {
+			return item
+		}
+	}
+	return ""
+}

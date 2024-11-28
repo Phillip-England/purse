@@ -411,5 +411,77 @@ func contains(slice []string, str string) bool {
 }
 
 func Fmt(str string, args ...any) string {
-	return RemoveFirstLine(fmt.Sprintf(str, args...))
+	// Format the string with the provided arguments
+	formatted := fmt.Sprintf(str, args...)
+
+	// Split the formatted string into lines
+	lines := strings.Split(formatted, "\n")
+
+	// Remove leading empty lines
+	var nonEmptyLines []string
+	for _, line := range lines {
+		if strings.TrimSpace(line) != "" {
+			nonEmptyLines = append(nonEmptyLines, line)
+		}
+	}
+	if len(nonEmptyLines) == 0 {
+		return "" // Return empty string if all lines were empty
+	}
+
+	// Determine the left whitespace of the first non-empty line
+	firstLine := nonEmptyLines[0]
+	leadingSpaces := len(firstLine) - len(strings.TrimLeft(firstLine, " "))
+
+	// Remove the leading spaces from all lines
+	var resultLines []string
+	for _, line := range nonEmptyLines {
+		if len(line) > leadingSpaces {
+			resultLines = append(resultLines, line[leadingSpaces:])
+		} else {
+			resultLines = append(resultLines, "") // Handle lines shorter than the indent
+		}
+	}
+
+	// Join the adjusted lines back into a single string
+	return strings.Join(resultLines, "\n")
+}
+
+func FmtError(err error) string {
+	if err == nil {
+		return ""
+	}
+
+	// Convert the error to a string
+	formatted := err.Error()
+
+	// Split the formatted string into lines
+	lines := strings.Split(formatted, "\n")
+
+	// Remove leading empty lines
+	var nonEmptyLines []string
+	for _, line := range lines {
+		if strings.TrimSpace(line) != "" {
+			nonEmptyLines = append(nonEmptyLines, line)
+		}
+	}
+	if len(nonEmptyLines) == 0 {
+		return "" // Return empty string if all lines were empty
+	}
+
+	// Determine the left whitespace of the first non-empty line
+	firstLine := nonEmptyLines[0]
+	leadingSpaces := len(firstLine) - len(strings.TrimLeft(firstLine, " "))
+
+	// Remove the leading spaces from all lines
+	var resultLines []string
+	for _, line := range nonEmptyLines {
+		if len(line) > leadingSpaces {
+			resultLines = append(resultLines, line[leadingSpaces:])
+		} else {
+			resultLines = append(resultLines, "") // Handle lines shorter than the indent
+		}
+	}
+
+	// Join the adjusted lines back into a single string
+	return strings.Join(resultLines, "\n")
 }

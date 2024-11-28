@@ -443,3 +443,13 @@ func Fmt(template string, args ...any) string {
 	// Join the lines back together
 	return strings.Join(lines, "\n")
 }
+
+func RemoveWrappingQuotes(s string) string {
+	if len(s) >= 2 {
+		first, last := s[0], s[len(s)-1]
+		if (first == '\'' && last == '\'') || (first == '"' && last == '"') {
+			return s[1 : len(s)-1]
+		}
+	}
+	return s
+}

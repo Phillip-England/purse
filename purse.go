@@ -453,3 +453,12 @@ func RemoveWrappingQuotes(s string) string {
 	}
 	return s
 }
+
+func EnforceBlacklist(input string, blacklist []string) bool {
+	for _, char := range input {
+		if contains(blacklist, string(char)) {
+			return false
+		}
+	}
+	return true
+}

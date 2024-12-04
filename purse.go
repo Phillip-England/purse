@@ -410,38 +410,9 @@ func contains(slice []string, str string) bool {
 	return false
 }
 
-func Err(template string, args ...any) (string, error) {
-	// Format the string using fmt.Sprintf
-	formatted := fmt.Sprintf(template, args...)
-
-	// Split the formatted string into lines
-	lines := strings.Split(formatted, "\n")
-
-	// If the first line is empty, remove it
-	if len(lines) > 0 && strings.TrimSpace(lines[0]) == "" {
-		lines = lines[1:]
-	}
-
-	// Check if there are lines remaining after removing the first
-	if len(lines) == 0 {
-		return "", fmt.Errorf("formatted string is empty after processing")
-	}
-
-	// Count leading spaces of the first non-empty line
-	firstLine := lines[0]
-	leadingSpaces := len(firstLine) - len(strings.TrimLeft(firstLine, " "))
-
-	// Trim the leading spaces from all lines
-	for i, line := range lines {
-		if len(line) >= leadingSpaces {
-			lines[i] = line[leadingSpaces:]
-		} else {
-			lines[i] = strings.TrimLeft(line, " ") // Fallback for shorter lines
-		}
-	}
-
-	// Join the lines back together
-	return strings.Join(lines, "\n"), nil
+func Err(template string, args ...any) error {
+	formatted := Fmt(template, args...)
+	return fmt.Errorf(formatted)
 }
 
 func Fmt(template string, args ...any) string {

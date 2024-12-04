@@ -462,3 +462,24 @@ func EnforceBlacklist(input string, blacklist []string) bool {
 	}
 	return true
 }
+
+// IsQuoteValid checks if a string contains balanced and valid quotes.
+func IsQuoteValid(s string) bool {
+	doubleQuoteOpen := false
+	singleQuoteOpen := false
+	for _, char := range s {
+		switch char {
+		case '"':
+			if singleQuoteOpen {
+				return false
+			}
+			doubleQuoteOpen = !doubleQuoteOpen
+		case '\'':
+			if doubleQuoteOpen {
+				return false
+			}
+			singleQuoteOpen = !singleQuoteOpen
+		}
+	}
+	return !doubleQuoteOpen && !singleQuoteOpen
+}

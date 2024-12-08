@@ -98,6 +98,33 @@ func TrimLeadingSpaces(str string) string {
 	return strings.Join(lines, "\n")
 }
 
+func TrimLeadingTabs(str string) string {
+	lines := strings.Split(str, "\n")
+	for i, line := range lines {
+		lines[i] = strings.TrimLeft(line, "\t")
+	}
+	return strings.Join(lines, "\n")
+}
+
+func TrimSomeLeadingTabs(str string, tabsToTrim int) string {
+	lines := strings.Split(str, "\n")
+	for i, line := range lines {
+		trimmed := 0
+		for j, char := range line {
+			if char == '\t' && trimmed < tabsToTrim {
+				trimmed++
+			} else {
+				lines[i] = line[j:] // Trim up to the number of tabs specified
+				break
+			}
+		}
+		if trimmed < tabsToTrim {
+			lines[i] = "" // If the line is fully trimmed, set it to an empty string
+		}
+	}
+	return strings.Join(lines, "\n")
+}
+
 // SliceContains checks if a slice contains a specific item.
 func SliceContains(slice []string, item string) bool {
 	for _, s := range slice {
@@ -492,4 +519,15 @@ func IsQuoteValid(s string) bool {
 		}
 	}
 	return !doubleQuoteOpen && !singleQuoteOpen
+}
+
+func CountLeadingTabs(line string) int {
+	count := 0
+	for _, char := range line {
+		if string(char) != "\t" {
+			break
+		}
+		count++
+	}
+	return count
 }

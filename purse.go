@@ -118,8 +118,9 @@ func TrimSomeLeadingTabs(str string, tabsToTrim int) string {
 				break
 			}
 		}
-		if trimmed < tabsToTrim {
-			lines[i] = "" // If the line is fully trimmed, set it to an empty string
+		// If the line only contained tabs, ensure it's set correctly
+		if trimmed > 0 && strings.TrimLeft(line, "\t") == "" {
+			lines[i] = ""
 		}
 	}
 	return strings.Join(lines, "\n")
@@ -442,43 +443,20 @@ func Err(template string, args ...any) error {
 	return fmt.Errorf(formatted)
 }
 
-func Fmt(template string, args ...any) string {
-	// Format the string using fmt.Sprintf
-	formatted := fmt.Sprintf(template, args...)
-
-	// Split the formatted string into lines
-	lines := strings.Split(formatted, "\n")
-
-	// If the first line is empty, remove it
-	if len(lines) > 0 && strings.TrimSpace(lines[0]) == "" {
-		lines = lines[1:]
+func Fmt(str string, args ...any) string {
+	str = RemoveFirstLine(str)
+	lines := MakeLines(str)
+	if len(lines) == 0 {
+		return ""
 	}
-
-	// If the last line is empty, remove it
-	if len(lines) > 0 && strings.TrimSpace(lines[len(lines)-1]) == "" {
-		lines = lines[:len(lines)-1]
-	}
-
-	// Calculate the minimum leading whitespace across all non-empty lines
-	minLeadingSpaces := -1
+	firstLine := lines[0]
+	firstLineTabs := CountLeadingTabs(firstLine)
+	out := make([]string, 0)
 	for _, line := range lines {
-		if trimmed := strings.TrimSpace(line); trimmed != "" { // Skip empty lines
-			leadingSpaces := len(line) - len(strings.TrimLeft(line, " "))
-			if minLeadingSpaces == -1 || leadingSpaces < minLeadingSpaces {
-				minLeadingSpaces = leadingSpaces
-			}
-		}
+		line = TrimSomeLeadingTabs(line, firstLineTabs)
+		out = append(out, line)
 	}
-
-	// Trim the leading spaces from all lines
-	for i, line := range lines {
-		if strings.TrimSpace(line) != "" { // Skip empty lines
-			lines[i] = line[minLeadingSpaces:]
-		}
-	}
-
-	// Join the lines back together
-	return strings.Join(lines, "\n")
+	return strings.Join(out, "\n")
 }
 
 func RemoveWrappingQuotes(s string) string {

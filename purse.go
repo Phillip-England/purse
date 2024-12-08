@@ -427,21 +427,26 @@ func Fmt(template string, args ...any) string {
 		lines = lines[1:]
 	}
 
-	// Check if there are lines remaining after removing the first
-	if len(lines) == 0 {
-		return "" // If no lines remain, return an empty string
+	// If the last line is empty, remove it
+	if len(lines) > 0 && strings.TrimSpace(lines[len(lines)-1]) == "" {
+		lines = lines[:len(lines)-1]
 	}
 
-	// Count leading spaces of the first non-empty line
-	firstLine := lines[0]
-	leadingSpaces := len(firstLine) - len(strings.TrimLeft(firstLine, " "))
+	// Calculate the minimum leading whitespace across all non-empty lines
+	minLeadingSpaces := -1
+	for _, line := range lines {
+		if trimmed := strings.TrimSpace(line); trimmed != "" { // Skip empty lines
+			leadingSpaces := len(line) - len(strings.TrimLeft(line, " "))
+			if minLeadingSpaces == -1 || leadingSpaces < minLeadingSpaces {
+				minLeadingSpaces = leadingSpaces
+			}
+		}
+	}
 
 	// Trim the leading spaces from all lines
 	for i, line := range lines {
-		if len(line) >= leadingSpaces {
-			lines[i] = line[leadingSpaces:]
-		} else {
-			lines[i] = strings.TrimLeft(line, " ") // Fallback for shorter lines
+		if strings.TrimSpace(line) != "" { // Skip empty lines
+			lines[i] = line[minLeadingSpaces:]
 		}
 	}
 

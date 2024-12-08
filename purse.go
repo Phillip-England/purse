@@ -467,7 +467,7 @@ func Fmt(str string, args ...any) string {
 		}
 		out = append(out, line)
 	}
-	return strings.Join(out, "\n")
+	return fmt.Sprintf(strings.Join(out, "\n"), args)
 }
 
 func RemoveWrappingQuotes(s string) string {

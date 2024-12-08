@@ -444,12 +444,20 @@ func Err(template string, args ...any) error {
 }
 
 func Fmt(str string, args ...any) string {
-	str = RemoveFirstLine(str)
 	lines := MakeLines(str)
 	if len(lines) == 0 {
 		return ""
 	}
 	firstLine := lines[0]
+	sq := Squeeze(firstLine)
+	if sq == "" {
+		str = RemoveFirstLine(str)
+	}
+	lines = MakeLines(str)
+	if len(lines) == 0 {
+		return ""
+	}
+	firstLine = lines[0]
 	firstLineTabs := CountLeadingTabs(firstLine)
 	out := make([]string, 0)
 	for _, line := range lines {

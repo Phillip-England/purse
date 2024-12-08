@@ -460,8 +460,11 @@ func Fmt(str string, args ...any) string {
 	firstLine = lines[0]
 	firstLineTabs := CountLeadingTabs(firstLine)
 	out := make([]string, 0)
-	for _, line := range lines {
+	for i, line := range lines {
 		line = TrimSomeLeadingTabs(line, firstLineTabs)
+		if i == len(lines)-1 && Squeeze(line) == "" {
+			continue
+		}
 		out = append(out, line)
 	}
 	return strings.Join(out, "\n")
